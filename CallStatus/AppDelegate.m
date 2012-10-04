@@ -10,6 +10,13 @@
 
 #import "ViewController.h"
 
+// Really, no <CoreTelephony/CoreTelephony.h> ?
+#import <CoreTelephony/CTCallCenter.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#import <CoreTelephony/CTCarrier.h>
+#import <CoreTelephony/CTCall.h>
+
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -19,7 +26,56 @@
 	self.viewController = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
 	self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
+	
+	[UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+	
+	CTCallCenter *callCenter = [[CTCallCenter alloc] init];
+	__block NSString *lastState = nil;
+	
+	__block void (^block)(void) = ^(void) {
+		
+		CTCall *call = [[callCenter currentCalls] anyObject];
+		
+		if (call){
+			if (![lastState isEqualToString:call.callState]){
+				self.isInCall = YES;	
+				lastState = call.callState;
+				[self postNotificationWithBody:call.callState];
+			}
+		} else {
+			if (lastState != nil){
+				[self postNotificationWithBody:@"CTCallStateDisconnected"]; // this is never fired
+				self.isInCall = NO;
+			} else {
+				if (self.isInCall){
+					int64_t delayInSeconds = 3.0;
+					dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+					dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+						[self postNotificationWithBody:@"Call Failed"];
+					});
+					
+					self.isInCall = NO;
+				}
+			}
+			lastState = nil;
+		}
+		
+		int64_t delayInSeconds = 0.1;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+		dispatch_after(popTime, dispatch_get_main_queue(), block);
+	};
+	
+	block();
+	
     return YES;
+}
+
+- (void) postNotificationWithBody:(NSString *)body
+{
+	NSLog(@"Posting: %@", body);
+	UILocalNotification *notification = [[UILocalNotification alloc] init];
+	notification.alertBody = body;
+	[[UIApplication sharedApplication] presentLocalNotificationNow:notification];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -32,6 +88,10 @@
 {
 	// Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
 	// If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+	
+	[[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+		
+	}];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application

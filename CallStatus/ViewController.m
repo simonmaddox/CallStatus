@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "AppDelegate.h"
 
 @interface ViewController ()
 
@@ -18,6 +19,13 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+}
+
+- (IBAction)call:(id)sender
+{
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"tel:202"]];
+	
+	[(AppDelegate *)[[UIApplication sharedApplication] delegate] setIsInCall:YES];
 }
 
 - (void)didReceiveMemoryWarning

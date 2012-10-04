@@ -18,6 +18,7 @@
 		F471DC6F161DBE11005A5ED5 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F471DC6E161DBE11005A5ED5 /* Default-568h@2x.png */; };
 		F471DC72161DBE11005A5ED5 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F471DC71161DBE11005A5ED5 /* ViewController.m */; };
 		F471DC75161DBE11005A5ED5 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F471DC73161DBE11005A5ED5 /* ViewController.xib */; };
+		F471DC7C161DBE5A005A5ED5 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F471DC7B161DBE5A005A5ED5 /* CoreTelephony.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		F471DC70161DBE11005A5ED5 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		F471DC71161DBE11005A5ED5 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		F471DC74161DBE11005A5ED5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
+		F471DC7B161DBE5A005A5ED5 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F471DC7C161DBE5A005A5ED5 /* CoreTelephony.framework in Frameworks */,
 				F471DC59161DBE11005A5ED5 /* UIKit.framework in Frameworks */,
 				F471DC5B161DBE11005A5ED5 /* Foundation.framework in Frameworks */,
 				F471DC5D161DBE11005A5ED5 /* CoreGraphics.framework in Frameworks */,
@@ -73,6 +76,7 @@
 		F471DC57161DBE11005A5ED5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F471DC7B161DBE5A005A5ED5 /* CoreTelephony.framework */,
 				F471DC58161DBE11005A5ED5 /* UIKit.framework */,
 				F471DC5A161DBE11005A5ED5 /* Foundation.framework */,
 				F471DC5C161DBE11005A5ED5 /* CoreGraphics.framework */,
@@ -265,10 +269,12 @@
 		F471DC7A161DBE11005A5ED5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CallStatus/CallStatus-Prefix.pch";
 				INFOPLIST_FILE = "CallStatus/CallStatus-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -292,6 +298,7 @@
 				F471DC7A161DBE11005A5ED5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
